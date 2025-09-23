@@ -12,26 +12,27 @@ BEGIN
       SET resultado = 0;
    END IF;
    RETURN resultado;
-END $$
+END; $$
 
 DELIMITER ;
 
 -- 2.
 DELIMITER $$
 USE bd_repaso $$
-DROP PROCEDURE IF EXISTS dia_semana $$
-CREATE PROCEDURE dia_semana(num INT)
+DROP FUNCTION IF EXISTS dia_semana $$
+CREATE FUNCTION dia_semana(num INT)
 BEGIN
+   RETURNS VARCHAR(20)
   CASE num
-    WHEN 1 THEN SELECT 'domingo';
-    WHEN 2 THEN SELECT 'lunes';
-    WHEN 3 THEN SELECT 'martes';
-    WHEN 4 THEN SELECT 'miércoles';
-    WHEN 5 THEN SELECT 'jueves';
-    WHEN 6 THEN SELECT 'viernes';
-    WHEN 7 THEN SELECT 'sábado';
+    WHEN 1 THEN RETURN 'domingo';
+    WHEN 2 THEN RETURN 'lunes';
+    WHEN 3 THEN RETURN 'martes';
+    WHEN 4 THEN RETURN 'miércoles';
+    WHEN 5 THEN RETURN 'jueves';
+    WHEN 6 THEN RETURN 'viernes';
+    WHEN 7 THEN RETURN 'sábado';
   END CASE;
-END $$
+END; $$
 
 DELIMITER ;
 
@@ -51,7 +52,7 @@ BEGIN
     SET resultado = num2;
   END IF;
   RETURN resultado;
-END $$
+END; $$
 
 DELIMITER ;
 
@@ -65,7 +66,7 @@ BEGIN
   DECLARE resultado INT;
   SET resultado = num * num;
   RETURN resultado;
-END $$
+END; $$
 
 DELIMITER ;
 
@@ -82,6 +83,6 @@ BEGIN
   ELSE
     SELECT CONCAT(edad,' no es un edad válida') AS 'Error';
   END IF;
-END $$
+END; $$
 
 DELIMITER ;
