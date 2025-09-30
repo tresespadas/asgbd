@@ -30,7 +30,6 @@ BEGIN
             LEAVE bucle2;
          END IF;
          SET v_contador = v_contador + 1;
-         END IF;
       END LOOP bucle2;
       CLOSE cursor_secundario;
       SELECT CONCAT("El autor con id ",v_id_autor," tiene ",v_contador," noticias.");
