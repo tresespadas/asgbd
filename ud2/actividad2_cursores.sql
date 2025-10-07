@@ -32,13 +32,13 @@ BEGIN
             END IF;
          SET v_ventas_totales = v_ventas_totales + v_ventas;
       END LOOP bucle2;
-      CLOSE cursor_secundario;
       IF v_ventas_min > v_ventas THEN
          SET v_ventas_min = v_ventas;
          SET v_id_tienda_min = v_id_tienda;
          SET v_min_tienda_nombre = v_tienda_nombre;
       END IF;
       SET lrf=0, v_ventas=0;
+      CLOSE cursor_secundario;
    END LOOP bucle1;
    CLOSE cursor_principal;
    SELECT CONCACT("La tienda con el menor número de ventas del último mes es ",v_min_tienda_nombre," con ",v_ventas_min,"ventas.");
