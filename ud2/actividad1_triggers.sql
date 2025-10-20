@@ -1,3 +1,4 @@
+-- Ejercicio 1
 DELIMITER $$
 CREATE TABLE cuentas (
    num_cuenta INT PRIMARY KEY
@@ -24,3 +25,12 @@ DELIMITER ;
 
 DELETE FROM cuentas WHERE num_cuenta=1;
 SELECT @total;
+
+
+-- Ejercicio 2
+DELIMITER $$
+CREATE TRIGGER trigger_comision AFTER INSERT on ventas FOR EACH ROW
+BEGIN
+   SET @importecomision = NEW.importeventa * 1.2;
+END; $$
+DELIMITER ;
