@@ -7,16 +7,12 @@ DO
    BEGIN
       INSERT INTO momentos VALUES (NOW());
       DELETE FROM noticias
-      WHERE fecha > DATE_SUB(NOW(), INTERVAL 1 HOUR);
-   END;$$
+      WHERE fecha <= DATE_SUB(NOW(), INTERVAL 1 HOUR);
+   END; $$
 DELIMITER ;
 
 -- Ejercicio 2
 DELIMITER $$
-
-CREATE TABLE temp(
-   ---
-)
 
 CREATE EVENT evento2
 ON SCHEDULE EVERY 1 DAY
@@ -24,3 +20,8 @@ STARTS CURRENT_TIMESTAP
 DO
    BEGIN
       INSERT INTO temp
+      SELECT *
+      FROM movimientos
+      WHERE cantidad > 1000.00;
+   END; $$
+DEMILITER ;
