@@ -1,7 +1,16 @@
+-- Tabla deudores
+DROP TABLE IF EXISTS deudores;
+
+CREATE TABLE deudores (
+    id_deudor   INT,
+    nom_deudor  VARCHAR(50),
+    deuda       DECIMAL(12,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Cursor deudores
 DELIMITER $$
 DROP PROCEDURE IF EXISTS cursor1 $$
-CREATE PROCEDURE cursor1 
+CREATE PROCEDURE cursor1()
 BEGIN
    DECLARE lrf BOOL;
    DECLARE v_cod_cliente, v_saldo, v_saldo_total INT;
@@ -28,7 +37,7 @@ BEGIN
       SET v_saldo_total=0;
       OPEN cursor_secundario;
       bucle2: LOOP
-         FETCH cursor_secundario INTO v_cod_cuenta, v_saldo
+         FETCH cursor_secundario INTO v_saldo;
          IF lrf=1 THEN
             LEAVE bucle2;
          END IF;
@@ -43,10 +52,10 @@ END; $$
 
 -- Trigger para actualizar la tabla cuentas
 DROP TRIGGER IF EXISTS trigger1 $$
-CREATE TRIGGER trigger1 BEFORE INSERT on movimiento
+CREATE TRIGGER trigger1 BEFORE INSERT on movimientos
 FOR EACH ROW
 BEGIN
-   UPDATE cuentas SET saldo = saldo + NEW.cantidad WHERE cod_cuenta=NEW.cod_cuenta
+   UPDATE cuentas SET saldo = saldo + NEW.cantidad WHERE cod_cuenta=NEW.cod_cuenta;
 END; $$
 
 -- Trigger para cambios en cuentas
@@ -56,3 +65,5 @@ FOR EACH ROW
 BEGIN
    CALL cursor1;
 END; $$
+
+DELIMITER ;
