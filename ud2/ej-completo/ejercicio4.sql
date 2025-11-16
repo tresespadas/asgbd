@@ -1,4 +1,4 @@
-SET  GLOBAL event_scheduler = ON;
+SET GLOBAL event_scheduler = ON;
 
 DELIMITER $$
 
@@ -37,6 +37,7 @@ BEGIN
   IF lrf=1 THEN
     LEAVE bucle1;
   END IF;
+  SET @v_importe_calculado = 0;
   OPEN cursor_secundario;
   bucle2: LOOP
     FETCH cursor_secundario INTO v_cant_pedido, v_precio_pedido;
@@ -44,12 +45,12 @@ BEGIN
       LEAVE bucle2;
     END IF;
     SET v_cant_total = v_cant_pedido * v_precio_pedido;
-    SET @v_importe_calculado = v_cant_total;
-    DELETE FROM detalles_pedido WHERE id_pedido=v_id_pedido;
-    DELETE FROM pedidos WHERE id_pedido=v_id_pedido;
+    SET @v_importe_calculado = @v_importe_calculado + v_cant_total;
   END LOOP bucle2;
-  SET lrf=0;
   CLOSE cursor_secundario;
+  DELETE FROM detalles_pedido WHERE id_pedido=v_id_pedido;
+  DELETE FROM pedidos WHERE id_pedido=v_id_pedido;
+  SET lrf=0;
   END LOOP bucle1;
   CLOSE cursor_principal;
 END; $$
@@ -60,7 +61,7 @@ CREATE EVENT evento_completado
 ON SCHEDULE EVERY 1 MONTH
 DO
 BEGIN
-  CALL cursor_eliminacion;
+  CALL cursor_eliminacion();
 END; $$
 
 DELIMITER ;
